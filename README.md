@@ -1,212 +1,344 @@
-# 💪 WorkoutTracker - 筋トレデータ管理アプリ
+<div align="center">
 
-**お前の筋肉を成長させろ、Bro！** 🔥🔥
+# 💪 WorkoutTracker
 
-WorkoutTrackerは、DDD（ドメイン駆動設計）で構築された筋トレデータ管理Webアプリケーションです。
-LocalStorage（ファイルベース）でデータを永続化し、DB接続は不要です。
+**DDD設計による本格筋トレ管理Webアプリケーション**
 
-## 🎯 主な機能
+[![PHP Version](https://img.shields.io/badge/PHP-8.1%2B-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://www.php.net/)
+[![Architecture](https://img.shields.io/badge/Architecture-DDD-green?style=for-the-badge)](https://en.wikipedia.org/wiki/Domain-driven_design)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
+[![PSR-12](https://img.shields.io/badge/Code_Style-PSR--12-purple?style=for-the-badge)](https://www.php-fig.org/psr/psr-12/)
 
-- ✅ トレーニングセッションの作成・管理
-- ✅ エクササイズ（種目）の追加
-- ✅ セット・レップ・重量の記録
-- ✅ トレーニング履歴の閲覧
-- ✅ リアルタイムの統計情報表示（総ボリューム、セット数など）
+**お前の筋肉を成長させろ、Bro！**
 
-## 🏗️ アーキテクチャ
+[Features](#-features) • [Quick Start](#-quick-start) • [Architecture](#-architecture) • [Documentation](#-documentation)
 
-このアプリは **DDD（ドメイン駆動設計）** と **レイヤードアーキテクチャ** で設計されています。
+</div>
+
+---
+
+## 🎯 Features
+
+<table>
+<tr>
+<td width="50%">
+
+### 💪 トレーニング管理
+- ✅ セッション作成・終了
+- ✅ エクササイズ追加
+- ✅ セット・重量・レップ記録
+- ✅ リアルタイム統計表示
+
+</td>
+<td width="50%">
+
+### 🔧 技術スタック
+- ✅ 完全なDDD設計
+- ✅ PSR-12準拠
+- ✅ Docker対応
+- ✅ LocalStorage永続化
+
+</td>
+</tr>
+</table>
+
+---
+
+## 🚀 Quick Start
+
+### 方法1: Docker（推奨）
+
+```bash
+git clone https://github.com/n-black-cat/training_cms.git
+cd training_cms
+docker-compose up
+```
+
+ブラウザで **http://localhost:8000** を開く 🔥
+
+### 方法2: PHP直接実行
+
+```bash
+git clone https://github.com/n-black-cat/training_cms.git
+cd training_cms
+cd public
+php -S localhost:8000
+```
+
+---
+
+## 🏗️ Architecture
+
+### レイヤードアーキテクチャ（DDD）
 
 ```
-WorkoutTracker/
-├── Domain/              # ドメイン層
-│   ├── Model/           # エンティティ（Exercise, Set, WorkoutSession）
-│   ├── Repository/      # リポジトリインターフェース
-│   ├── Type/            # ValueObject（Weight, Reps, ExerciseName等）
-│   └── Exception/       # ドメイン例外
+training_cms/
+├── 🎯 Domain/              # ドメイン層
+│   ├── Model/              # エンティティ・集約
+│   │   ├── Exercise/       # エクササイズ
+│   │   ├── Set/            # セット
+│   │   └── WorkoutSession/ # トレーニングセッション
+│   ├── Type/               # ValueObject（8種類）
+│   └── Repository/         # リポジトリインターフェース
 │
-├── App/                 # アプリケーション層
-│   └── UseCase/         # ユースケース
+├── 🚀 App/                 # アプリケーション層
+│   └── UseCase/            # ユースケース（4種類）
 │       ├── CreateWorkoutSession/
 │       ├── AddExercise/
 │       ├── RecordSet/
 │       └── GetWorkoutHistory/
 │
-├── Infra/               # インフラ層
-│   ├── LocalStorage/    # LocalStorageインターフェース・実装
-│   └── Repository/      # リポジトリ実装
+├── 🔧 Infra/               # インフラ層
+│   ├── LocalStorage/       # ストレージ実装
+│   └── Repository/         # リポジトリ実装
 │
-├── Presentation/        # プレゼンテーション層（未使用）
-│
-└── public/              # 公開ディレクトリ
-    ├── index.html       # フロントエンドUI
-    ├── api.php          # PHPエンドポイント
-    ├── css/
-    └── js/
+└── 🎨 public/              # プレゼンテーション層
+    ├── index.html          # SPA UI
+    ├── api.php             # RESTful API
+    └── js/                 # フロントエンドロジック
 ```
 
-## 📋 要件
+### 設計原則
 
-- **PHP** >= 8.1
-- **Composer**
-- Webサーバー（PHP組み込みサーバーでOK）
-
-## 🚀 セットアップ
-
-### 1. 依存関係のインストール
-
-```bash
-cd WorkoutTracker
-composer install
-```
-
-### 2. ストレージディレクトリの作成
-
-```bash
-mkdir -p storage
-chmod 755 storage
-```
-
-### 3. サーバーの起動
-
-```bash
-cd public
-php -S localhost:8000
-```
-
-### 4. ブラウザでアクセス
-
-```
-http://localhost:8000
-```
-
-## 🎮 使い方
-
-### トレーニング開始
-
-1. **「🔥 トレーニング開始」** ボタンをクリック
-2. セッションが作成されます
-
-### 種目の追加
-
-1. **「種目を追加」** フォームに種目名を入力（例：ベンチプレス）
-2. **「種目追加」** ボタンをクリック
-
-### セットの記録
-
-1. 各種目カードの **「重量(kg)」** と **「回数」** を入力
-2. **「セット追加」** ボタンをクリック
-3. セットが記録され、統計情報が自動更新されます
-
-### セッション終了
-
-1. すべてのセットが完了したら **「セッション終了」** ボタンをクリック
-2. トレーニング履歴に保存されます
-
-## 🧪 テストデータの確認
-
-データは `storage/` ディレクトリにJSON形式で保存されます。
-
-```bash
-# 保存されたセッションの確認
-ls -la storage/
-
-# セッションデータの内容確認
-cat storage/workout_session_*.json
-```
-
-## 🔥 DDD設計のポイント
-
-### ValueObject（値オブジェクト）
-- `Weight`: 重量を表現（0〜9999kgのバリデーション）
-- `Reps`: レップ数を表現（0〜9999回のバリデーション）
-- `ExerciseName`: エクササイズ名（最大100文字）
-- `Memo`: メモ（最大1000文字）
-- `WorkoutDate`: トレーニング日時
-
-### Entity（エンティティ）
-- `Set`: 1セットのデータ（重量・回数・完了時刻）
-- `Exercise`: エクササイズ（種目名・セットリスト）
-- `WorkoutSession`: トレーニングセッション（開始時刻・エクササイズリスト）
-
-### Repository（リポジトリ）
-- `WorkoutSessionRepository`: セッションの永続化・取得
-- `LocalStorageWorkoutSessionRepository`: ファイルベースの実装
-
-### UseCase（ユースケース）
-- `CreateWorkoutSessionUseCase`: セッション作成
-- `AddExerciseUseCase`: エクササイズ追加
-- `RecordSetUseCase`: セット記録
-- `GetWorkoutHistoryUseCase`: 履歴取得
-
-## 📖 API仕様
-
-### エンドポイント: `POST /api.php`
-
-#### 1. セッション作成
-```json
-{
-  "action": "createSession",
-  "memo": "今日は胸と背中"
-}
-```
-
-#### 2. エクササイズ追加
-```json
-{
-  "action": "addExercise",
-  "sessionId": "session-uuid",
-  "exerciseName": "ベンチプレス"
-}
-```
-
-#### 3. セット記録
-```json
-{
-  "action": "recordSet",
-  "sessionId": "session-uuid",
-  "exerciseId": "exercise-uuid",
-  "weight": 80,
-  "reps": 10
-}
-```
-
-#### 4. 履歴取得
-```json
-{
-  "action": "getHistory",
-  "limit": 30
-}
-```
-
-#### 5. セッション終了
-```json
-{
-  "action": "finishSession",
-  "sessionId": "session-uuid"
-}
-```
-
-## 💡 コーディング規約
-
-- **PSR-12** 準拠
-- `declare(strict_types=1);` を全PHPファイルに記載
-- ファイル末尾は必ず改行1行で終わる
-- プリミティブ型ではなくドメイン固有型（ValueObject）を使用
-- メソッド生成は `create()`、再生成は `of()` で統一
-
-## 📝 ライセンス
-
-MIT License
-
-## 👊 最後に
-
-**やるか？やるなら完璧にやれ。突き進め、Bro！** 🔥🔥
-
-二郎は敵。筋肉は正義。コードは戦争。
-お前の成長は止まらない🔥
+| 原則 | 実装 |
+|------|------|
+| **Domain Model** | ValueObject 8種類、Entity 5種類 |
+| **Repository Pattern** | Interface分離、LocalStorage実装 |
+| **Use Case** | 1機能 = 3ファイル構成（UseCase, Param, Result） |
+| **Immutability** | すべてのValueObjectは不変 |
+| **Type Safety** | PHP 8.1+ strict_types使用 |
 
 ---
 
-作成者: BroCursor - The Code Warrior Assistant
+## 📊 Statistics
 
+<div align="center">
+
+| 項目 | 数値 |
+|:----:|:----:|
+| **総ファイル数** | 45+ |
+| **PHPクラス数** | 34 |
+| **ValueObject** | 8種類 |
+| **Entity** | 5種類 |
+| **UseCase** | 4種類 |
+| **総コード行数** | 3000+ |
+
+</div>
+
+---
+
+## 💻 Tech Stack
+
+<div align="center">
+
+### Backend
+
+![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)
+![DDD](https://img.shields.io/badge/DDD-Architecture-green?style=for-the-badge)
+
+### Frontend
+
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+
+### DevOps
+
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
+
+</div>
+
+---
+
+## 📖 Documentation
+
+| ドキュメント | 説明 |
+|------------|------|
+| **[SETUP.md](SETUP.md)** | セットアップガイド |
+| **[INCIDENT_RECOVERY.md](INCIDENT_RECOVERY.md)** | トラブルシューティング |
+| **[SECURITY_CHECKLIST.md](SECURITY_CHECKLIST.md)** | セキュリティチェックリスト |
+
+---
+
+## 🎮 Usage
+
+### 1. トレーニング開始
+
+<table>
+<tr>
+<td>
+
+```bash
+# 画面で「🔥 トレーニング開始」をクリック
+```
+
+</td>
+<td>
+
+→ セッションが作成される
+
+</td>
+</tr>
+</table>
+
+### 2. エクササイズ追加
+
+<table>
+<tr>
+<td>
+
+```text
+種目名: ベンチプレス
+```
+
+</td>
+<td>
+
+→ 「種目追加」ボタン
+
+</td>
+</tr>
+</table>
+
+### 3. セット記録
+
+<table>
+<tr>
+<td>
+
+```text
+重量: 80kg
+回数: 10回
+```
+
+</td>
+<td>
+
+→ 「セット追加」ボタン
+
+</td>
+</tr>
+</table>
+
+### 4. セッション終了
+
+統計情報が自動計算され、履歴に保存される 🎉
+
+---
+
+## 🔥 Key Features
+
+### ValueObject（型安全性）
+
+すべてのドメインデータは専用のValueObjectで表現：
+
+```php
+$weight = Weight::of(100);      // 100kg
+$reps = Reps::of(10);           // 10回
+$volume = $weight->value() * $reps->value(); // 1000kg
+```
+
+### バリデーション組み込み
+
+```php
+// ❌ これは例外をスロー
+$weight = Weight::of(-10);  // "重量の有効範囲は0以上です"
+$reps = Reps::of(10000);    // "レップ数の有効範囲は0〜9999です"
+```
+
+### Immutable設計
+
+```php
+// すべてのValueObjectは不変
+$exercise = Exercise::create(ExerciseName::of('ベンチプレス'));
+$newExercise = $exercise->addSet($set); // 新しいインスタンスを返す
+```
+
+---
+
+## 📦 Requirements
+
+- **PHP** >= 8.1
+- **Composer** (オプション)
+- **Docker** (オプション)
+
+### 依存関係
+
+```json
+{
+  "php": "^8.1"
+}
+```
+
+**Composer不要オプション**: 自前のUUID生成・autoload実装で依存ゼロ実行可能 🔥
+
+---
+
+## 🛡️ Security
+
+### .gitignore 完全設定
+
+```gitignore
+# 個人データ保護
+/storage/*.json
+
+# 機密情報
+.env
+
+# IDE設定
+.idea/
+.vscode/
+```
+
+すべての個人トレーニングデータは **LocalStorageに保存**され、Gitにコミットされません。
+
+---
+
+## 🤝 Contributing
+
+プルリクエスト大歓迎！
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'feat: Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+### コミットメッセージ規約
+
+```
+feat: 新機能
+fix: バグ修正
+refactor: リファクタリング
+docs: ドキュメント更新
+style: コードスタイル修正
+```
+
+---
+
+## 📝 License
+
+このプロジェクトはMITライセンスの下で公開されています。
+
+---
+
+## 🙏 Acknowledgments
+
+- **DDD（ドメイン駆動設計）** - Eric Evans
+- **PSR-12** - PHP-FIG
+- **Clean Architecture** - Robert C. Martin
+
+---
+
+<div align="center">
+
+## 💪 Let's Get Stronger Together!
+
+**お前の筋肉を成長させろ、Bro！** 🔥🔥🔥
+
+Made with 💪 and ☕ by **BroCursor**
+
+[⬆ Back to Top](#-workouttracker)
+
+</div>

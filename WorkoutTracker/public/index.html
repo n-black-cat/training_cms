@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WorkoutTracker - 筋トレ記録アプリ</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💪 WorkoutTracker</h1>
+            <p class="subtitle">お前の筋肉を成長させろ、Bro！</p>
+        </header>
+
+        <main>
+            <!-- セッション作成エリア -->
+            <section class="session-control">
+                <div id="noSessionArea">
+                    <button id="startSessionBtn" class="btn btn-primary">
+                        <span>🔥</span> トレーニング開始
+                    </button>
+                </div>
+
+                <div id="activeSessionArea" style="display: none;">
+                    <div class="active-session-info">
+                        <h2>📊 現在のセッション</h2>
+                        <p class="session-time">開始時刻: <span id="sessionStartTime"></span></p>
+                        <div class="session-stats">
+                            <span>種目数: <strong id="exerciseCount">0</strong></span>
+                            <span>総セット数: <strong id="totalSets">0</strong></span>
+                            <span>総ボリューム: <strong id="totalVolume">0</strong>kg</span>
+                        </div>
+                    </div>
+
+                    <!-- エクササイズ追加 -->
+                    <div class="add-exercise-form">
+                        <h3>種目を追加</h3>
+                        <input type="text" id="exerciseName" placeholder="種目名（例：ベンチプレス）" maxlength="100">
+                        <button id="addExerciseBtn" class="btn btn-secondary">種目追加</button>
+                    </div>
+
+                    <!-- エクササイズリスト -->
+                    <div id="exercisesList"></div>
+
+                    <button id="finishSessionBtn" class="btn btn-finish">セッション終了</button>
+                </div>
+            </section>
+
+            <!-- 履歴表示エリア -->
+            <section class="history-section">
+                <h2>📝 トレーニング履歴</h2>
+                <div id="historyList"></div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
+

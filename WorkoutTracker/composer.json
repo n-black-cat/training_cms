@@ -1,0 +1,18 @@
+{
+    "name": "workouttracker/workout-tracker",
+    "description": "筋トレデータ管理Webアプリケーション - DDD設計",
+    "type": "project",
+    "require": {
+        "php": "^8.1",
+        "ramsey/uuid": "^4.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "WorkoutTracker\\": ""
+        }
+    },
+    "config": {
+        "optimize-autoloader": true
+    }
+}
+
